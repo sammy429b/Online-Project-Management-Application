@@ -1,0 +1,13 @@
+.header-with-before::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 60vh; /* Adjust the height as needed */
+    background: url('Header-bg.svg') no-repeat center center;
+    background-size: cover; /* Adjust as needed: contain or cover */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Ensure the pseudo-element is behind the content */
+  }
+  
