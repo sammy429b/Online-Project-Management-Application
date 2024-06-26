@@ -1,8 +1,11 @@
-import React from 'react'
+import Navbar from "./Navbar"
 
 function ProjectList() {
   return (
+    <>
+    <Navbar header={"Project Listing"}/>
     <div>ProjectList</div>
+    </>
   )
 }
 
