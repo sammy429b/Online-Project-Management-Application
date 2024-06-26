@@ -2,6 +2,7 @@ import express, {Express, Request,  Response} from 'express'
 import dotenv from 'dotenv'
 import DBconnection from './utils/DBconnect';
 import authRoute from './routes/auth.route'
+import projectRoute from './routes/project.route'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
@@ -17,6 +18,7 @@ app.use(cors({
     credentials: true
 }));
 app.use("/",authRoute)
+app.use("/",projectRoute)
 
 
 app.get("/", (req: Request, res:Response)=>{
