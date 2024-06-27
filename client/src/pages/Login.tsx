@@ -3,9 +3,13 @@ import '../App.css';
 import { useForm } from 'react-hook-form';
 import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
 
 function Login() {
+    const {handleLoginAuth} = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
     const [error, setError] = useState('');
 
     const onSubmit = async (data) => {
@@ -15,8 +19,11 @@ function Login() {
             const responseData = await response.data;
             console.log(ApiConfig.API_LOGIN_URL)
             console.log(responseData)
-            if (data.Success === true) {
+            if (responseData.Success === true) {
                 setError('Login Successful');
+                alert('Login Successful');
+                navigate('/');
+                handleLoginAuth();
             } else if(data.Success === false) {
                 setError('Invalid creadentials');
             }
