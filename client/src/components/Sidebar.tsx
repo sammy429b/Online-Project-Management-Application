@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
     const [active, setActive] = useState("Dashboard");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Handle initial navigation based on active state
+        if (active === "Dashboard") {
+            navigate('/');
+        } else if (active === "Project-list") {
+            navigate('/project-list');
+        } else if (active === "Create-project") {
+            navigate('/create-project');
+        }
+    }, [active, navigate]);
 
     const handleClick = (item, path) => {
         setActive(item);
