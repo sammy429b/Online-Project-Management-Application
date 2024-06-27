@@ -48,6 +48,10 @@ const ProjectSchema: Schema = new Schema({
         enum: ['Strategy', 'Finance', 'Quality', 'Maintenance', 'Stores'],
         required: true,
     },
+    status: {
+        type: String,
+        default: 'Registered'
+    },
     startDate: {
         type: Date,
         required: true,
