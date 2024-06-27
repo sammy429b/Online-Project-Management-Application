@@ -10,4 +10,7 @@
     left: 0;
     z-index: -1; /* Ensure the pseudo-element is behind the content */
   }
-  
+
+  .scrollbar {
+    scrollbar-width: none;
+  }

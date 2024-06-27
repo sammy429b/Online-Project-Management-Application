@@ -1,18 +1,19 @@
 
-function Navbar({header}) {
+function Navbar({header}:{header:string}) {
   return (
     <>
         <div className="w-full">
             <div className="w-full">
-                <img className="w-full" src="Header-bg.svg" alt="" />
-                <div className="w-full flex justify-between items-center fixed top-10 px-8"> 
+                <img className="w-full object-cover  h-20 md:h-auto" src="Header-bg.svg" alt="" />
+                <div className="w-full flex justify-between items-center fixed top-4 md:top-10 px-8"> 
                     <div>
                         <p className="text-white text-2xl font-semibold">{header}</p>
                     </div>
-                    <div>
-                        <img src="Logo.svg" alt="Logo" />
+                    <div className="hidden md:block">
+                        <img src="Logo.svg" alt="Logo" className="" />
                     </div>
-                    <div className="mr-32">
+                    <div className="md:mr-32">
+                        <img src="Logout.svg" alt="Profile" className="block md:hidden cursor-pointer " />
                     </div>
                 </div>
             </div>
