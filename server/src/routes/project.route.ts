@@ -1,10 +1,12 @@
 import {Router} from 'express'
-import { createProjectController, getProjectController, updateProjectStatusController } from '../controllers/project.controller';
+import { chartDataController, createProjectController, getProjectController, projectCountController, updateProjectStatusController } from '../controllers/project.controller';
 
 const router = Router();
 
 router.get("/project-list", getProjectController)
 router.post("/create-project", createProjectController)
 router.put("/update-status", updateProjectStatusController)
+router.get("/dashboard", projectCountController)
+router.get("/chart", chartDataController)
 
 export default router;

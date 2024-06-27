@@ -51,6 +51,7 @@ const ProjectSchema: Schema = new Schema({
     },
     status: {
         type: String,
+        enum: ['Registered', 'Running', 'Closed', 'Cancelled'],
         default: 'Registered'
     },
     startDate: {
