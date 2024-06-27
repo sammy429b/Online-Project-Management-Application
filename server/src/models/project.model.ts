@@ -8,6 +8,7 @@ export interface IProject extends Document {
     category: 'Quality A' | 'Quality B' | 'Quality C' | 'Quality D';
     priority: 'Low' | 'Medium' | 'High';
     department: 'Strategy' | 'Finance' | 'Quality' | 'Maintenance' | 'Stores';
+    status: 'Registered' | 'Running' | 'Closed' | 'Cancelled';
     startDate: Date;
     endDate: Date;
     location: 'Pune' | 'Delhi' | 'Mumbai';

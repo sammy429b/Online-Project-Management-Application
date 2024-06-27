@@ -56,3 +56,30 @@ export const getProjectController = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+
+export const updateProjectStatusController = async (req: Request, res: Response) => {
+    try {
+        const { status, id } = req.body;
+
+        if (!status || !id) {
+            return res.status(400).json({ message: "Status & id are required" });
+        }
+
+        const project = await Project.findById(id);
+
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+
+        project.status = status;
+
+        await project.save();
+
+        res.status(200).json({ message: "Project status updated successfully", project });
+
+    } catch (error) {
+        console.log("error in createProject", error)
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
