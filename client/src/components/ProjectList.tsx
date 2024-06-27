@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { AlignLeft, Search } from "lucide-react";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -36,11 +36,24 @@ function ProjectList() {
     }
   };
 
+  const dateTransform = (date: string) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const dateObj = new Date(date);
+    const monthName = months[dateObj.getMonth()];
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const formatDate = monthName + " " + day + "," + year;
+    return formatDate;
+  }
+
   useEffect(() => {
     getProject();
   }, []);
 
-  const handleStatusChange = async (id:string, status:string) => {
+  const handleStatusChange = async (id: string, status: string) => {
     try {
       const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status });
       console.log(response.data);
@@ -58,7 +71,7 @@ function ProjectList() {
     setSearchTerm(e.target.value);
   };
 
-  const handleSortChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedField = e.target.value;
     setSortField(selectedField);
     // Toggle sort order
@@ -84,14 +97,14 @@ function ProjectList() {
   return (
     <>
       <Navbar header={"Project Listing"} />
-      <div className="w-[90%] h-screen mx-8 px-6 bg-white rounded-lg fixed top-32">
+      <div className="w-[90%] h-screen mx-8 px-6 md:bg-white rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
         <div className="flex justify-between items-center p-4">
           <div className="max-w-sm w-full">
             <label className=" flex items-center gap-2 border-b-2 border-gray-300 pb-2 w-full max-w-md">
               <Search className="text-gray-400" />
               <input
                 type="search"
-                className="grow border-none outline-none w-full max-w-md"
+                className="grow border-none outline-none w-full max-w-md bg-slate-200 md:bg-white"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={handleSearchChange}
@@ -99,6 +112,21 @@ function ProjectList() {
             </label>
           </div>
           <div>
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <button className="text-gray-400" onClick={() => document.getElementById('my_modal_3').showModal()}><AlignLeft /></button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <form method="dialog">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                {FilterType.map((type) => (
+                  <p key={type}>{type}</p>
+                ))}
+              </div>
+            </dialog>
+          </div>
+          <div className="hidden md:block">
             <label className="flex items-center gap-x-4 justify-center w-full max-w-md">
               <span className="text-gray-400">Sort By :</span>
               <select
@@ -114,8 +142,42 @@ function ProjectList() {
           </div>
         </div>
 
+        <div className="mb-52">
+
+          {filteredProjects.map((project) => (
+            <div className="bg-white p-4 mb-4 rounded ">
+              <div className="flex justify-between mb-4">
+                <div >
+                  <h2 className="font-semibold">{project.projectTheme}</h2>
+                  <p className="text-sm text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">{project.status}</p>
+                </div>
+              </div>
+              <div>
+                <p><span className="text-sm text-gray-400">Reason: </span><span className="text-sm">{project.reason}</span></p>
+                <p><span><span className="text-sm text-gray-400">Type: </span><span className="text-sm">{project.type}</span></span>
+                  <span> <span className="text-sm text-gray-400">Category: </span><span className="text-sm">{project.category}</span></span>
+                </p>
+                <p><span><span className="text-sm text-gray-400">Div: </span><span className="text-sm">{project.division}</span></span>
+                  <span> <span className="text-sm text-gray-400">Dept: </span><span className="text-sm">{project.department}</span></span>
+                </p>
+                <p><span className="text-sm text-gray-400">Location: </span><span className="text-sm">{project.location}</span></p>
+                <p><span className="text-sm text-gray-400">Priority: </span><span className="text-sm">{project.priority}</span></p>
+              </div>
+              <div className="flex justify-around items-center gap-x-4 mt-4">
+                <button className="bg-primary text-white w-24 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
+                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
+                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+
         <div className="w-full py-8">
-          <table className="min-w-full bg-white border-gray-200 rounded-md">
+          <table className="min-w-full bg-white border-gray-200 rounded-md hidden md:block">
             <thead>
               <tr className="bg-gray-200 text-left text-sm font-medium text-gray-700">
                 <th className="px-6 py-3 border-b border-gray-200">Project Theme</th>
