@@ -1,5 +1,7 @@
+import { useAuth } from "../context/useAuth";
 
 function Navbar({header}:{header:string}) {
+    const {handleLogoutAuth} = useAuth();
   return (
     <>
         <div className="w-full">
@@ -12,7 +14,7 @@ function Navbar({header}:{header:string}) {
                     <div className="hidden md:block">
                         <img src="Logo.svg" alt="Logo" className="" />
                     </div>
-                    <div className="md:mr-32">
+                    <div className="md:mr-32" onClick={handleLogoutAuth}>
                         <img src="Logout.svg" alt="Profile" className="block md:hidden cursor-pointer " />
                     </div>
                 </div>

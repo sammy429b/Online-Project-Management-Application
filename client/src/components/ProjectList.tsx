@@ -142,7 +142,7 @@ function ProjectList() {
           </div>
         </div>
 
-        <div className="mb-52">
+        <div className="mb-52 block md:hidden">
 
           {filteredProjects.map((project) => (
             <div className="bg-white p-4 mb-4 rounded ">
@@ -194,10 +194,12 @@ function ProjectList() {
                 <th className="px-6 py-3 border-b border-gray-200"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-sm">
               {filteredProjects.map((project) => (
                 <tr key={project._id}>
-                  <td className="px-6 py-4 border-b border-gray-200">{project.projectTheme}</td>
+                  <td className="w-80 px-0 py-4 border-b border-gray-200">{project.projectTheme}
+                    <p className="text-sm  text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
+                  </td>
                   <td className="px-6 py-4 border-b border-gray-200">{project.reason}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{project.type}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{project.division}</td>
@@ -206,20 +208,27 @@ function ProjectList() {
                   <td className="px-6 py-4 border-b border-gray-200">{project.department}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{project.location}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{project.status}</td>
-                  <td className="px-2 py-4 border-b border-gray-200">
-                    <button className="bg-primary text-white w-20 h-6 rounded-xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
+                  <td className="px-1 py-4 border-b border-gray-200">
+                    <button className="bg-primary text-white w-20 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
                   </td>
-                  <td className="px-2 py-4 border-b border-gray-200">
-                    <button className="w-20 h-6 text-primary border-primary border rounded-xl" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
+                  <td className="px-1 py-4 border-b border-gray-200">
+                    <button className="w-20 h-8 rounded-2xl text-primary border-primary border " onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
                   </td>
-                  <td className="px-2 py-4 border-b border-gray-200">
-                    <button className="w-20 h-6 text-primary border-primary border rounded-xl" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
+                  <td className="px-1 py-4 border-b border-gray-200">
+                    <button className="w-20 h-8 rounded-2xl text-primary border-primary border " onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        {/* <div className="w-full fixed bottom-8">
+          <button className="join-item btn">1</button>
+          <button className="join-item btn">2</button>
+          <button className="join-item btn btn-disabled">...</button>
+          <button className="join-item btn">99</button>
+          <button className="join-item btn">100</button>
+        </div> */}
       </div>
     </>
   );
