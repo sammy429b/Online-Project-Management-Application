@@ -115,6 +115,7 @@ export const projectCountController = async (req: Request, res: Response) => {
 
 // Chart Data Controller
 export const chartDataController = async (req: Request, res: Response) => {
+    
     try {
         const departmentSuccess = await Project.aggregate([
             {

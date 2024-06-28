@@ -1,5 +1,5 @@
 import { AlignLeft, Search } from "lucide-react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ApiConfig from "../utils/ApiConfig";
@@ -45,7 +45,10 @@ function ProjectList() {
   // Fetch project list
   const getProject = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_PROJECT_LIST_URL);
+      const response = await axios.get(ApiConfig.API_PROJECT_LIST_URL,{
+        withCredentials: true,
+      
+      });
       setProjects([...response.data.projects]);
     } catch (error) {
       console.log(error);
@@ -59,7 +62,9 @@ function ProjectList() {
   // Update project status
   const handleStatusChange = async (id: string, status: string) => {
     try {
-      const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status });
+      const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status },{
+        withCredentials: true,      
+      });
       console.log(response.data);
       setProjects((prevProjects) =>
         prevProjects.map((project) =>

@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
 import { Project } from './ProjectList';
@@ -18,7 +18,10 @@ function CreateProject() {
             return;
         }
         try {
-            const response = await axios.post(ApiConfig.API_CREATE_PROJECT_URL, data);
+            const response = await axios.post(ApiConfig.API_CREATE_PROJECT_URL, data, {
+                withCredentials: true,
+            
+            });
             const responseData = await response.data;
             if (responseData.message === "Project created successfully.") {
                 alert('Project created successfully.')

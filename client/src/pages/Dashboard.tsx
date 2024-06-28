@@ -1,6 +1,6 @@
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../components/DashboardCard";
 import axios from "axios";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import ApiConfig from "../utils/ApiConfig";
 import { useEffect, useState } from "react";
 import {
@@ -88,7 +88,10 @@ function Dashboard() {
   // Fetch chart data
   const fetchData = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_CHART_URL);
+      const response = await axios.get(ApiConfig.API_CHART_URL,{
+        withCredentials: true, // Important for sending cookies
+      
+      });
       const data = response.data;
       setChartData(data);
       console.log('Chart data:', data);
@@ -100,7 +103,10 @@ function Dashboard() {
   // Fetch dashboard data
   const getDashboardData = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_DASHBOARD_URL);
+      const response = await axios.get(ApiConfig.API_DASHBOARD_URL,{
+        withCredentials: true,
+      
+      });
       setDashboardData(Object.entries(response.data));
     } catch (error) {
       console.log(error);

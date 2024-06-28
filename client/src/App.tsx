@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
-import Dashboard from "./components/Dashboard";
-import ProjectList from "./components/ProjectList";
-import CreateProject from "./components/CreateProject";
+import Dashboard from "./pages/Dashboard";
+import ProjectList from "./pages/ProjectList";
+import CreateProject from "./pages/CreateProject";
 import PrivateRoute from "./utils/ProtectesRoutes";
 
 export default function App() {

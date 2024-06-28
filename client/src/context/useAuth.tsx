@@ -1,11 +1,13 @@
+import axios from 'axios';
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import ApiConfig from '../utils/ApiConfig';
 
 // Define the shape of the AuthContext
 interface AuthContextType {
-    token: string;
     isAuthenticated: boolean;
     handleLoginAuth: () => void;
     handleLogoutAuth: () => void;
+    handleLogut: () => void;
 }
 
 // Create the AuthContext with a default value
@@ -19,25 +21,39 @@ interface AuthProviderProps {
 // Define the AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isAuthenticated, setAuthenticated] = useState<boolean>(() => JSON.parse(localStorage.getItem("isAuthenticated") || 'true'));
-    const [token, setToken] = useState<string>(() => localStorage.getItem("token") || '');
     useEffect(() => {
         localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
     }, [isAuthenticated]);
 
     const handleLoginAuth = () => {
         setAuthenticated(true);
-        setToken("sdfsf");
         localStorage.setItem("isAuthenticated", JSON.stringify(true));
     };
     
+    const handleLogut = async() =>{
+        try {
+            const response = await axios.get(ApiConfig.API_LOGOUT_URL,{
+                withCredentials:true
+            })
+
+            console.log("response", response)
+
+            if(response.status === 200){
+                handleLogoutAuth();
+            }
+
+        } catch (error) {
+            console.log("error in logout", error)
+        }
+    }
+
     const handleLogoutAuth = () => {
         setAuthenticated(false);
         localStorage.removeItem("isAuthenticated");
-        setToken('');        
     };
 
     return (
-        <AuthContext.Provider value={{ token, isAuthenticated, handleLoginAuth, handleLogoutAuth }}>
+        <AuthContext.Provider value={{isAuthenticated, handleLoginAuth, handleLogoutAuth,handleLogut }}>
             {children}
         </AuthContext.Provider>
     );

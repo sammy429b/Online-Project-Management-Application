@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User from "../models/user.model";
 import bcrypt from 'bcrypt'
-import { JWTsign, JWTverify } from '../utils/JWT';
+import { JWTsign } from '../utils/JWT';
 
 
 interface loginType{
@@ -79,7 +79,7 @@ export const loginController = async (req: Request, res: Response) => {
             httpOnly: true,
         });
 
-        res.status(201).json({ Success:true, Message: "Valid User" });
+        res.status(201).json({ Success:true, Message: "Valid User", token });
 
     } catch (error) {
         console.error("Error in login route", error);
@@ -91,7 +91,7 @@ export const loginController = async (req: Request, res: Response) => {
 export const logoutController = async (req: Request, res: Response) => {
     try {
         res.clearCookie('token');
-        res.send('Cookie cleared');
+        res.status(200).json({ message: "Logged out successfully" });
 
     } catch (error) {
         console.error("Error in login route", error);

@@ -5,7 +5,7 @@ import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
-import { Project } from '../components/ProjectList';
+import { Project } from '../pages/ProjectList';
 import { Eye, EyeOff } from 'lucide-react';
 
 function Login() {
@@ -23,9 +23,12 @@ function Login() {
     const onSubmit = async (data: Project) => {
         console.log(data)
         try {
-            const response = await axios.post(ApiConfig.API_LOGIN_URL, data);
+            const response = await axios.post(ApiConfig.API_LOGIN_URL, data, {
+                withCredentials: true,
+            });
             const responseData = await response.data;
         
+            console.log(responseData)
             if (responseData.Success === true) {
                 setError('Login Successful');
                 alert('Login Successful');

@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
+import { Request, Response, NextFunction } from "express";
+import User from "../models/user.model";
 dotenv.config();
 
 
@@ -26,19 +28,40 @@ export function JWTsign(payload: number): string | null {
 }
 
 // JWT Token verification
-export function JWTverify(JWTtoken: string): any {
+export function JWTverify(req: Request, res: Response, next: NextFunction): void {
+    const cookie = req.cookies;
     const JWT_SECRET_KEY = process.env.SECRET_KEY;
 
     if (!JWT_SECRET_KEY) {
         console.error('JWT Secret Key is missing');
-        return null;
+        res.status(500).json({ message: "Internal server error" });
+        return;
+    }
+
+    if (!cookie) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+
+    const token = cookie.token;
+
+    if (!token) {
+        res.status(401).json({ message: "Unauthorized: token expired" });
+        return;
     }
 
     try {
-        const token = jwt.verify(JWTtoken, JWT_SECRET_KEY,)
-        return token;
+        const decoded = jwt.verify(token, JWT_SECRET_KEY);
+        console.log(decoded);
+        const id = (decoded as { id: number }).id;
+        const user = User.findById(id);
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+            return;
+        }
+        next();
     } catch (error) {
-        console.error('Error signing JWT:', error);
-        return null;
+        console.error('Error verifying JWT:', error);
+        res.status(401).json({ message: "Unauthorized" });
     }
 }
