@@ -20,7 +20,7 @@ function CreateProject() {
         try {
             const response = await axios.post(ApiConfig.API_CREATE_PROJECT_URL, data, {
                 withCredentials: true,
-            
+
             });
             const responseData = await response.data;
             if (responseData.message === "Project created successfully.") {

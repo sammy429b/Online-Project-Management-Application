@@ -5,7 +5,7 @@ import axios from "axios";
 import ApiConfig from "../utils/ApiConfig";
 import dateTransform from "../utils/DateTransform";
 
-const FilterType = ["Priority", "Category", "Reason", "Division", "Department", "Location"];
+const FilterType = ["Priority", "Category", "Reason", "Division", "Department",];
 
 export interface Project {
   _id: string;
@@ -30,8 +30,10 @@ function ProjectList() {
   const[startIndex, setStartIndex] = useState(0);
   const[endIndex, setEndIndex] = useState(5);
 
+
+
   const handleIncrement = () => {
-    if(endIndex >= projects.length) return;
+    if(endIndex >= filteredProjects.length) return;
     setStartIndex(startIndex + 5);
     setEndIndex(endIndex + 5);
   }
@@ -59,6 +61,50 @@ function ProjectList() {
     getProject();
   }, []);
 
+  const handleSortChange = (field: string) => {
+    // Toggle sort order if the same field is clicked again
+    if (field === sortField) {
+      setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortOrder("asc"); // Default to ascending order when changing the sort field
+    }
+  };
+  
+  const sortedProjects = [...projects].sort((a, b) => {
+    let valueA: any = a[sortField.toLowerCase()];
+    let valueB: any = b[sortField.toLowerCase()];
+
+    const sortMaps: { [key: string]: { [key: string]: number } } = {
+      priority: { low: 1, medium: 2, high: 3 },
+      category: { "quality a": 1, "quality b": 2, "quality c": 3, "quality d": 4 },
+      reason: { business: 1, dealership: 2, transport: 3 },
+      division: { "compressor": 1, filters: 2, pumps: 3, glass: 4, "water heater": 5 },
+      department: { strategy: 1, finance: 2, quality: 3, maintenance: 4, stores: 5 },
+      location: { pune: 1, delhi: 2, mumbai: 3 },
+      status: { registered: 1, running: 2, closed: 3, cancelled: 4 }
+    };
+
+    if (sortMaps[sortField.toLowerCase()]) {
+      valueA = sortMaps[sortField.toLowerCase()][valueA.toLowerCase()] ?? 0;
+      valueB = sortMaps[sortField.toLowerCase()][valueB.toLowerCase()] ?? 0;
+    } else {
+      valueA = valueA?.toString().toLowerCase() ?? "";
+      valueB = valueB?.toString().toLowerCase() ?? "";
+    }
+
+    let comparison = 0;
+    if (valueA > valueB) {
+      comparison = 1;
+    } else if (valueA < valueB) {
+      comparison = -1;
+    }
+
+    return sortOrder === "desc" ? comparison * -1 : comparison;
+  });
+
+  // Function to map priority levels to numeric order
+
   // Update project status
   const handleStatusChange = async (id: string, status: string) => {
     try {
@@ -81,23 +127,7 @@ function ProjectList() {
     setSearchTerm(e.target.value);
   };
 
-  const handleSortChange = (e) => {
-    const selectedField = e.target.value;
-    setSortField(selectedField);
-    // Toggle sort order
-    setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
-  };
-
-  const sortedProjects = [...projects].sort((a, b) => {
-    if (a[sortField] < b[sortField]) {
-      return sortOrder === "asc" ? -1 : 1;
-    }
-    if (a[sortField] > b[sortField]) {
-      return sortOrder === "asc" ? 1 : -1;
-    }
-    return 0;
-  });
-
+  // Filter projects based on search term
   const filteredProjects = sortedProjects.filter((project) =>
     Object.values(project).some((value) =>
       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
@@ -142,7 +172,7 @@ function ProjectList() {
               <select
                 className="select select-ghost max-w-xs"
                 value={sortField}
-                onChange={handleSortChange}
+                onChange={(e) => handleSortChange(e.target.value)}
               >
                 {FilterType.map((type) => (
                   <option key={type}>{type}</option>
@@ -188,8 +218,8 @@ function ProjectList() {
 
          {/* Table for desktop view */}
         <div className="w-full py-8">
-          <table className="min-w-full bg-white border-gray-200 rounded-md hidden md:block">
-            <thead>
+          <table className="w-full bg-white border-gray-200 rounded-md hidden md:block">
+            <thead className="w-full">
               <tr className="bg-gray-200 text-left text-sm font-medium text-gray-700">
                 <th className="px-6 py-3 border-b border-gray-200">Project Theme</th>
                 <th className="px-6 py-3 border-b border-gray-200">Reason</th>
@@ -200,9 +230,9 @@ function ProjectList() {
                 <th className="px-6 py-3 border-b border-gray-200">Department</th>
                 <th className="px-6 py-3 border-b border-gray-200">Location</th>
                 <th className="px-6 py-3 border-b border-gray-200">Status</th>
-                <th className="px-6 py-3 border-b border-gray-200"></th>
-                <th className="px-6 py-3 border-b border-gray-200"></th>
-                <th className="px-6 py-3 border-b border-gray-200"></th>
+                <th className="px-6 py-3 border-b border-gray-200"> </th>
+                <th className="px-6 py-3 border-b border-gray-200"> </th>
+                <th className="px-6 py-3 border-b border-gray-200"> </th>
               </tr>
             </thead>
             <tbody className="text-sm">
@@ -233,9 +263,10 @@ function ProjectList() {
             </tbody>
           </table>
 
+          {/* pagination buttons */}
           <div className="fixed bottom-4 ">
             <button className="btn btn-ghost w-20 h-8 rounded-2xl" onClick={handleDecrement}>Prev</button>
-            <button className="btn btn-ghost w-20 h-8 rounded-2xl" onClick={handleIncrement}>Next</button>
+            <button className={`btn btn-ghost w-20 h-8 rounded-2xl }`} onClick={handleIncrement}>Next</button>
           </div>
         </div>
       </div>
