@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ApiConfig from "../utils/ApiConfig";
+import dateTransform from "../utils/DateTransform";
 
 const FilterType = ["Priority", "Category", "Reason", "Division", "Department", "Location"];
 
@@ -36,18 +37,7 @@ function ProjectList() {
     }
   };
 
-  const dateTransform = (date: string) => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    const dateObj = new Date(date);
-    const monthName = months[dateObj.getMonth()];
-    const day = dateObj.getDate();
-    const year = dateObj.getFullYear();
-
-    const formatDate = monthName + " " + day + "," + year;
-    return formatDate;
-  }
+  
 
   useEffect(() => {
     getProject();
@@ -111,7 +101,7 @@ function ProjectList() {
               />
             </label>
           </div>
-          <div>
+          <div className="block md:hidden">
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             <button className="text-gray-400" onClick={() => document.getElementById('my_modal_3').showModal()}><AlignLeft /></button>
             <dialog id="my_modal_3" className="modal">
@@ -146,32 +136,32 @@ function ProjectList() {
 
           {filteredProjects.map((project) => (
             <div className="bg-white p-4 mb-4 rounded ">
-              <div className="flex justify-between mb-4">
-                <div >
-                  <h2 className="font-semibold">{project.projectTheme}</h2>
-                  <p className="text-sm text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
-                </div>
-                <div>
-                  <p className="font-medium text-sm">{project.status}</p>
-                </div>
+            <div className="flex justify-between mb-4">
+              <div >
+                <h2 className="font-semibold">{project.projectTheme}</h2>
+                <p className="text-sm text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
               </div>
               <div>
-                <p><span className="text-sm text-gray-400">Reason: </span><span className="text-sm">{project.reason}</span></p>
-                <p><span><span className="text-sm text-gray-400">Type: </span><span className="text-sm">{project.type}</span></span>
-                  <span> <span className="text-sm text-gray-400">Category: </span><span className="text-sm">{project.category}</span></span>
-                </p>
-                <p><span><span className="text-sm text-gray-400">Div: </span><span className="text-sm">{project.division}</span></span>
-                  <span> <span className="text-sm text-gray-400">Dept: </span><span className="text-sm">{project.department}</span></span>
-                </p>
-                <p><span className="text-sm text-gray-400">Location: </span><span className="text-sm">{project.location}</span></p>
-                <p><span className="text-sm text-gray-400">Priority: </span><span className="text-sm">{project.priority}</span></p>
-              </div>
-              <div className="flex justify-around items-center gap-x-4 mt-4">
-                <button className="bg-primary text-white w-24 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
-                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
-                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
+                <p className="font-medium text-sm">{project.status}</p>
               </div>
             </div>
+            <div>
+              <p><span className="text-sm text-gray-400">Reason: </span><span className="text-sm">{project.reason}</span></p>
+              <p><span><span className="text-sm text-gray-400">Type: </span><span className="text-sm">{project.type}</span></span>
+                <span> <span className="text-sm text-gray-400">Category: </span><span className="text-sm">{project.category}</span></span>
+              </p>
+              <p><span><span className="text-sm text-gray-400">Div: </span><span className="text-sm">{project.division}</span></span>
+                <span> <span className="text-sm text-gray-400">Dept: </span><span className="text-sm">{project.department}</span></span>
+              </p>
+              <p><span className="text-sm text-gray-400">Location: </span><span className="text-sm">{project.location}</span></p>
+              <p><span className="text-sm text-gray-400">Priority: </span><span className="text-sm">{project.priority}</span></p>
+            </div>
+            <div className="flex justify-around items-center gap-x-4 mt-4">
+              <button className="bg-primary text-white w-24 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
+              <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
+              <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
+            </div>
+          </div>
           ))}
         </div>
 
@@ -222,13 +212,6 @@ function ProjectList() {
             </tbody>
           </table>
         </div>
-        {/* <div className="w-full fixed bottom-8">
-          <button className="join-item btn">1</button>
-          <button className="join-item btn">2</button>
-          <button className="join-item btn btn-disabled">...</button>
-          <button className="join-item btn">99</button>
-          <button className="join-item btn">100</button>
-        </div> */}
       </div>
     </>
   );

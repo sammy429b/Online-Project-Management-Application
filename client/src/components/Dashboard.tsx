@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import DashboardCard from "./DashboardCard";
 
 // Register the components
 ChartJS.register(
@@ -68,49 +69,41 @@ function Dashboard() {
     getDashboardData();
   }, []);
 
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Success Percentage'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top'
+      },
+      title: {
+        display: true,
+        text: 'Department-wise Project Success Percentage'
+      }
+    }
+  };
+
   return (
     <>
       <Navbar header={"Dashboard"} />
-      <div className="w-[90%] h-screen mx-8 px-6 rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
-        <div className="flex justify-around">
-          {dashboardData.map((data: any, index: number) => (
-            <div
-              key={index}
-              className="bg-white w-60 h-24 flex items-start shadow-lg rounded-lg overflow-hidden"
-            >
-              <div className="px-2 h-full bg-[#0CC9E8]"></div>
-              <div className="pl-4 pt-4">
-                <h2 className="text-md font-medium text-gray-700">{data[0]}</h2>
-                <p className="text-4xl font-bold text-gray-500">{data[1]}</p>
-              </div>
+      <div className="w-full md:w-[90%] h-screen mx-4 md:mx-8 px-0 md:px-6 rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
+        <div className="flex md:justify-between justify-center gap-x-2 md:gap-x-0">
+          {dashboardData.slice(0, 5).map((data: any, index: number) => (
+            <div key={index} className={`${index >= 3 ? 'hidden md:block' : ''}`}>
+              <DashboardCard data={data}/>
             </div>
           ))}
         </div>
-        <div>
-          <Bar
-            data={chartData}
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  title: {
-                    display: true,
-                    text: 'Success Percentage'
-                  }
-                }
-              },
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top'
-                },
-                title: {
-                  display: true,
-                  text: 'Department-wise Project Success Percentage'
-                }
-              }
-            }}
-          />
+        <div className="mt-8">
+          <Bar data={chartData} options={options} />
         </div>
       </div>
     </>
