@@ -28,6 +28,7 @@ function ProjectList() {
   const [sortField, setSortField] = useState<string>("Priority");
   const [sortOrder, setSortOrder] = useState<string>("asc");
 
+  // Fetch project list
   const getProject = async () => {
     try {
       const response = await axios.get(ApiConfig.API_PROJECT_LIST_URL);
@@ -37,12 +38,11 @@ function ProjectList() {
     }
   };
 
-  
-
   useEffect(() => {
     getProject();
   }, []);
 
+  // Update project status
   const handleStatusChange = async (id: string, status: string) => {
     try {
       const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status });
@@ -57,11 +57,12 @@ function ProjectList() {
     }
   };
 
+  // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortChange = (e) => {
     const selectedField = e.target.value;
     setSortField(selectedField);
     // Toggle sort order
@@ -132,40 +133,41 @@ function ProjectList() {
           </div>
         </div>
 
-        <div className="mb-52 block md:hidden">
 
+        {/* Card for Mobile view */}
+        <div className="mb-52 block md:hidden">
           {filteredProjects.map((project) => (
             <div className="bg-white p-4 mb-4 rounded ">
-            <div className="flex justify-between mb-4">
-              <div >
-                <h2 className="font-semibold">{project.projectTheme}</h2>
-                <p className="text-sm text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
+              <div className="flex justify-between mb-4">
+                <div >
+                  <h2 className="font-semibold">{project.projectTheme}</h2>
+                  <p className="text-sm text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">{project.status}</p>
+                </div>
               </div>
               <div>
-                <p className="font-medium text-sm">{project.status}</p>
+                <p><span className="text-sm text-gray-400">Reason: </span><span className="text-sm">{project.reason}</span></p>
+                <p><span><span className="text-sm text-gray-400">Type: </span><span className="text-sm">{project.type}</span></span>
+                  <span> <span className="text-sm text-gray-400">Category: </span><span className="text-sm">{project.category}</span></span>
+                </p>
+                <p><span><span className="text-sm text-gray-400">Div: </span><span className="text-sm">{project.division}</span></span>
+                  <span> <span className="text-sm text-gray-400">Dept: </span><span className="text-sm">{project.department}</span></span>
+                </p>
+                <p><span className="text-sm text-gray-400">Location: </span><span className="text-sm">{project.location}</span></p>
+                <p><span className="text-sm text-gray-400">Priority: </span><span className="text-sm">{project.priority}</span></p>
+              </div>
+              <div className="flex justify-around items-center gap-x-4 mt-4">
+                <button className="bg-primary text-white w-24 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
+                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
+                <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
               </div>
             </div>
-            <div>
-              <p><span className="text-sm text-gray-400">Reason: </span><span className="text-sm">{project.reason}</span></p>
-              <p><span><span className="text-sm text-gray-400">Type: </span><span className="text-sm">{project.type}</span></span>
-                <span> <span className="text-sm text-gray-400">Category: </span><span className="text-sm">{project.category}</span></span>
-              </p>
-              <p><span><span className="text-sm text-gray-400">Div: </span><span className="text-sm">{project.division}</span></span>
-                <span> <span className="text-sm text-gray-400">Dept: </span><span className="text-sm">{project.department}</span></span>
-              </p>
-              <p><span className="text-sm text-gray-400">Location: </span><span className="text-sm">{project.location}</span></p>
-              <p><span className="text-sm text-gray-400">Priority: </span><span className="text-sm">{project.priority}</span></p>
-            </div>
-            <div className="flex justify-around items-center gap-x-4 mt-4">
-              <button className="bg-primary text-white w-24 h-8 rounded-2xl" onClick={() => handleStatusChange(project._id, "Running")}>Start</button>
-              <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Closed")}>Close</button>
-              <button className="w-24 h-8 rounded-2xl text-primary border-primary border" onClick={() => handleStatusChange(project._id, "Cancelled")}>Cancel</button>
-            </div>
-          </div>
           ))}
         </div>
 
-
+         {/* Table for desktop view */}
         <div className="w-full py-8">
           <table className="min-w-full bg-white border-gray-200 rounded-md hidden md:block">
             <thead>

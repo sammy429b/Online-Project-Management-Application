@@ -1,8 +1,8 @@
+import DashboardCard from "./DashboardCard";
 import axios from "axios";
 import Navbar from "./Navbar";
 import ApiConfig from "../utils/ApiConfig";
 import { useEffect, useState } from "react";
-import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,9 +12,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import DashboardCard from "./DashboardCard";
+import { Bar } from 'react-chartjs-2';
 
-// Register the components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,36 +25,79 @@ ChartJS.register(
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState<any>([]);
-  const [chartData, setChartData] = useState<any>({
-    labels: [],
-    datasets: []
-  });
+  const [chartData, setChartData] = useState<any[]>([]);
 
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Department wise  Total vs Closed Projects',
+      },
+    },
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: {
+          display: false, // Remove background grid lines
+        },
+        ticks: {
+          // Customize x-axis ticks if needed
+          // min: 20,
+          // max: 100,
+          stepSize: 1,
+        },
+      },
+      y: {
+        stacked: true,
+        grid: {
+          display: false, // Remove background grid lines
+        },
+        ticks: {
+          // Customize x-axis ticks if needed
+          // min: 20,
+          // max: 100,
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
+  const data = {
+    labels: chartData.map((data: any) => data.department),
+    datasets: [
+      {
+        label: 'Total projects',
+        data: chartData.map((data: any) => data.totalProjects),
+        backgroundColor: 'rgb(53, 162, 235)',
+        stack: 'Stack 0',
+      },
+      {
+        label: 'Closed projects',
+        data: chartData.map((data: any) => data.closedProjects),
+        backgroundColor: 'rgb(255, 99, 132)',
+        stack: 'Stack 1',
+      },
+    ],
+  };
+
+  // Fetch chart data
   const fetchData = async () => {
     try {
       const response = await axios.get(ApiConfig.API_CHART_URL);
       const data = response.data;
-      setChartData({
-        labels: data.map((item: any) => item.department),
-        datasets: [
-          {
-            label: 'Success Percentage',
-            data: data.map((item: any) => item.successPercentage),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }
-        ]
-      });
+      setChartData(data);
+      console.log('Chart data:', data);
     } catch (error) {
       console.error('Error fetching chart data:', error);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  // Fetch dashboard data
   const getDashboardData = async () => {
     try {
       const response = await axios.get(ApiConfig.API_DASHBOARD_URL);
@@ -66,30 +108,9 @@ function Dashboard() {
   };
 
   useEffect(() => {
+    fetchData();
     getDashboardData();
   }, []);
-
-  const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Success Percentage'
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top'
-      },
-      title: {
-        display: true,
-        text: 'Department-wise Project Success Percentage'
-      }
-    }
-  };
 
   return (
     <>
@@ -98,12 +119,12 @@ function Dashboard() {
         <div className="flex md:justify-between justify-center gap-x-2 md:gap-x-0">
           {dashboardData.slice(0, 5).map((data: any, index: number) => (
             <div key={index} className={`${index >= 3 ? 'hidden md:block' : ''}`}>
-              <DashboardCard data={data}/>
+              <DashboardCard data={data} />
             </div>
           ))}
         </div>
-        <div className="mt-8">
-          <Bar data={chartData} options={options} />
+        <div className="mt-8 w-1/2 bg-white">
+          <Bar data={data} options={options} />
         </div>
       </div>
     </>

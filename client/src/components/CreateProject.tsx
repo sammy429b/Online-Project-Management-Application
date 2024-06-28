@@ -3,11 +3,12 @@ import Navbar from "./Navbar";
 import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
 import { Project } from './ProjectList';
-
-
-
+import { FieldErrors } from 'react-hook-form';
 function CreateProject() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+    // Function to handle form submission
     const onSubmit: SubmitHandler<Project> = async (data: Project) => {
         const startDate = new Date(data.startDate);
         const endDate = new Date(data.endDate);
@@ -19,11 +20,10 @@ function CreateProject() {
         try {
             const response = await axios.post(ApiConfig.API_CREATE_PROJECT_URL, data);
             const responseData = await response.data;
-            // console.log(ApiConfig.API_CREATE_PROJECT_URL)
-            // console.log(responseData)
             if (responseData.message === "Project created successfully.") {
                 alert('Project created successfully.')
-            }else{
+                reset();
+            } else {
                 alert('All fields are required')
             }
 
@@ -36,7 +36,7 @@ function CreateProject() {
         <>
             <Navbar header={"Create Project"} />
             <div className='flex justify-center'>
-                
+
                 <div className="w-[90%] mx-auto bg-white py-4 px-8 h-screen rounded-lg fixed overflow-scroll top-32 scrollbar pb-64 md:pb-0">
                     <form onSubmit={handleSubmit(onSubmit)} className=''>
                         <div className="w-full flex  justify-between items-start">
@@ -106,12 +106,14 @@ function CreateProject() {
                     </form>
                 </div>
             </div>
-            
+
         </>
     );
 }
 
 export default CreateProject;
+
+
 
 interface InputProps {
     label: string;
