@@ -14,6 +14,7 @@ interface projectType {
     location: string
 }
 
+// Create Project Controller
 export const createProjectController = async (req: Request, res: Response) => {
     try {
         const { projectTheme, reason, type, division, category, priority, department, startDate, endDate, location } = req.body as projectType;
@@ -45,9 +46,10 @@ export const createProjectController = async (req: Request, res: Response) => {
 }
 
 
+// Get Project Controller
 export const getProjectController = async (req: Request, res: Response) => {
     try {
-        
+
         const projects = await Project.find({});
         res.status(200).json({ projects });
 
@@ -58,6 +60,7 @@ export const getProjectController = async (req: Request, res: Response) => {
 }
 
 
+// Update Project Status Controller
 export const updateProjectStatusController = async (req: Request, res: Response) => {
     try {
         const { status, id } = req.body;
@@ -84,7 +87,7 @@ export const updateProjectStatusController = async (req: Request, res: Response)
     }
 }
 
-
+// Project Count Controller
 export const projectCountController = async (req: Request, res: Response) => {
     try {
         let totalProjects = await Project.countDocuments({});
@@ -92,17 +95,17 @@ export const projectCountController = async (req: Request, res: Response) => {
         let runningProjects = await Project.countDocuments({ status: "Running" });
         let cancelledProjects = await Project.countDocuments({ status: "Cancelled" });
 
-        let delayedProjects = await Project.countDocuments({ 
+        let delayedProjects = await Project.countDocuments({
             status: "Running",
             endDate: { $lt: new Date() }
         });
 
         res.status(200).json({
-            TotalProject : totalProjects,
-            Closed : closedProjects,
-            Running : runningProjects,
-            ClosureDelay :delayedProjects , 
-            Cancelled : cancelledProjects,
+            TotalProject: totalProjects,
+            Closed: closedProjects,
+            Running: runningProjects,
+            ClosureDelay: delayedProjects,
+            Cancelled: cancelledProjects,
         });
     } catch (error) {
         console.error("error in projectCountController", error);
@@ -110,7 +113,7 @@ export const projectCountController = async (req: Request, res: Response) => {
     }
 }
 
-
+// Chart Data Controller
 export const chartDataController = async (req: Request, res: Response) => {
     try {
         const departmentSuccess = await Project.aggregate([

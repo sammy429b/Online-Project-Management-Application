@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 dotenv.config();
 
 
+// JWT Token generation
 export function JWTsign(payload: number): string | null {
     const JWT_SECRET_KEY = process.env.SECRET_KEY;
 
@@ -13,8 +14,8 @@ export function JWTsign(payload: number): string | null {
 
     try {
         const token = jwt.sign({ id: payload }, JWT_SECRET_KEY, {
-            algorithm: 'HS256', // Change to RS256 if you are using RSA keys
-            expiresIn: '10s',
+            algorithm: 'HS256',
+            expiresIn: '1h',
         });
         console.log(token)
         return token;
@@ -24,6 +25,7 @@ export function JWTsign(payload: number): string | null {
     }
 }
 
+// JWT Token verification
 export function JWTverify(JWTtoken: string): any {
     const JWT_SECRET_KEY = process.env.SECRET_KEY;
 

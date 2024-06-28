@@ -123,7 +123,7 @@ function Dashboard() {
             </div>
           ))}
         </div>
-        <div className="mt-8 w-1/2 bg-white">
+        <div className="p-4 mt-8 mx-auto md:mx-0 w-4/5 h-80 md:h-80 md:w-1/2 bg-white">
           <Bar data={data} options={options} />
         </div>
       </div>
