@@ -27,6 +27,20 @@ function ProjectList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<string>("Priority");
   const [sortOrder, setSortOrder] = useState<string>("asc");
+  const[startIndex, setStartIndex] = useState(0);
+  const[endIndex, setEndIndex] = useState(5);
+
+  const handleIncrement = () => {
+    if(endIndex >= projects.length) return;
+    setStartIndex(startIndex + 5);
+    setEndIndex(endIndex + 5);
+  }
+
+  const handleDecrement = () => {
+    if(startIndex <= 0) return;
+    setStartIndex(startIndex - 5);
+    setEndIndex(endIndex - 5);
+  }
 
   // Fetch project list
   const getProject = async () => {
@@ -187,7 +201,7 @@ function ProjectList() {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {filteredProjects.map((project) => (
+              {filteredProjects.slice(startIndex,endIndex).map((project) => (
                 <tr key={project._id}>
                   <td className="w-80 px-0 py-4 border-b border-gray-200">{project.projectTheme}
                     <p className="text-sm  text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>
@@ -213,6 +227,11 @@ function ProjectList() {
               ))}
             </tbody>
           </table>
+
+          <div className="fixed bottom-4 ">
+            <button className="btn btn-ghost w-20 h-8 rounded-2xl" onClick={handleDecrement}>Prev</button>
+            <button className="btn btn-ghost w-20 h-8 rounded-2xl" onClick={handleIncrement}>Next</button>
+          </div>
         </div>
       </div>
     </>
