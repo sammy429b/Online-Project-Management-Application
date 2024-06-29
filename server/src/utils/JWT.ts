@@ -17,7 +17,7 @@ export function JWTsign(payload: number): string | null {
     try {
         const token = jwt.sign({ id: payload }, JWT_SECRET_KEY, {
             algorithm: 'HS256',
-            expiresIn: '1h',
+            expiresIn: '1d',
         });
         console.log(token)
         return token;

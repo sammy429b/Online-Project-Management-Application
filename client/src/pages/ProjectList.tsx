@@ -30,8 +30,6 @@ function ProjectList() {
   const[startIndex, setStartIndex] = useState(0);
   const[endIndex, setEndIndex] = useState(5);
 
-
-
   const handleIncrement = () => {
     if(endIndex >= filteredProjects.length) return;
     setStartIndex(startIndex + 5);
@@ -70,6 +68,8 @@ function ProjectList() {
       setSortOrder("asc"); // Default to ascending order when changing the sort field
     }
   };
+
+  // fucntion to sort the projects based on the selected field
   
   const sortedProjects = [...projects].sort((a, b) => {
     let valueA: any = a[sortField.toLowerCase()];
@@ -79,7 +79,7 @@ function ProjectList() {
       priority: { low: 1, medium: 2, high: 3 },
       category: { "quality a": 1, "quality b": 2, "quality c": 3, "quality d": 4 },
       reason: { business: 1, dealership: 2, transport: 3 },
-      division: { "compressor": 1, filters: 2, pumps: 3, glass: 4, "water heater": 5 },
+      division: { compressor: 1, filters: 2, pumps: 3, glass: 4, "water heater": 5 },
       department: { strategy: 1, finance: 2, quality: 3, maintenance: 4, stores: 5 },
       location: { pune: 1, delhi: 2, mumbai: 3 },
       status: { registered: 1, running: 2, closed: 3, cancelled: 4 }
@@ -102,8 +102,6 @@ function ProjectList() {
 
     return sortOrder === "desc" ? comparison * -1 : comparison;
   });
-
-  // Function to map priority levels to numeric order
 
   // Update project status
   const handleStatusChange = async (id: string, status: string) => {

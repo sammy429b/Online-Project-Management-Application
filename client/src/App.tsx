@@ -4,14 +4,16 @@ import Main from "./pages/Main";
 import Dashboard from "./pages/Dashboard";
 import ProjectList from "./pages/ProjectList";
 import CreateProject from "./pages/CreateProject";
-import PrivateRoute from "./utils/ProtectesRoutes";
+import PrivateRoute, { PublicRoute } from "./utils/ProtectesRoutes";
 
 export default function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route element={<PublicRoute/>}>
           <Route path="/login" element={<Login />} />
+          </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Main />}>
               <Route index element={<Dashboard />} />
