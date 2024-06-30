@@ -101,10 +101,10 @@ export const projectCountController = async (req: Request, res: Response) => {
         });
 
         res.status(200).json({
-            TotalProject: totalProjects,
+            "Total Project": totalProjects,
             Closed: closedProjects,
             Running: runningProjects,
-            ClosureDelay: delayedProjects,
+            "Closure Delay": delayedProjects,
             Cancelled: cancelledProjects,
         });
     } catch (error) {

@@ -9,9 +9,8 @@ import { Project } from '../pages/ProjectList';
 import { Eye, EyeOff } from 'lucide-react';
 
 function Login() {
-    const [error, setError] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+    const [message, setMessage] = useState('');
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { handleLoginAuth } = useAuth();
     const navigate = useNavigate();
@@ -21,25 +20,35 @@ function Login() {
     }
 
     const onSubmit = async (data: Project) => {
-        console.log(data)
+        // console.log(data)
         try {
             const response = await axios.post(ApiConfig.API_LOGIN_URL, data, {
                 withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
+            console.log(response)
             const responseData = await response.data;
-        
-            console.log(responseData)
-            if (responseData.Success === true) {
-                setError('Login Successful');
-                alert('Login Successful');
+            console.log(responseData.Message)
+            if (responseData.Success) {
+                setMessage(responseData.Message)
                 navigate('/');
                 handleLoginAuth();
             } else {
-                setError('Invalid creadentials');
+                setMessage(responseData.Message)
+                console.log(responseData)
             }
 
         } catch (error) {
-            setError('Invalid creadentials');
+            console.log()
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+              } else if (error.request) {
+                console.error('No response received:', error.request);
+              } else {
+                console.error('Error setting up request:', error.message);
+              }
         }
     };
 
@@ -58,7 +67,7 @@ function Login() {
                     <img src="Logo.svg" alt="Logo" className="z-10" />
                     <h2 className='text-white'>Online Project Management</h2>
                 </div>
-                
+
                 <form onSubmit={handleSubmit(onSubmit)} className='bg-white w-[90%] md:w-[30%] py-10 px-12 shadow-none md:shadow-lg rounded-lg'>
                     <h1 className="text-2xl font-bold mb-4">Login to get started</h1>
                     <div className={`form-control w-full ${errors.email ? 'text-red-500' : ''}`}>
@@ -99,7 +108,7 @@ function Login() {
                         <button type="submit" className="btn bg-[#035FB2] hover:bg-[#045FB2] text-white btn-circle mt-6 w-full md:w-1/2 h-[0.5rem]">Login</button>
                     </div>
                 </form>
-                <div className='text-red-500 my-4'>{error}</div>
+                <div className='text-red-500 my-2'>{message}</div>
             </div>
         </div>
     );

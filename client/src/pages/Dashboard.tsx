@@ -1,100 +1,87 @@
-import DashboardCard from "../components/DashboardCard";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import DashboardCard from "../components/DashboardCard";
 import Navbar from "../components/Navbar";
 import ApiConfig from "../utils/ApiConfig";
-import { useEffect, useState } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState<any>([]);
   const [chartData, setChartData] = useState<any[]>([]);
 
   const options = {
-    plugins: {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Department wise Total vs Closed Projects'
+    },
+    xAxis: {
+      categories: chartData.map((data: any) => data.department),
       title: {
-        display: true,
-        text: 'Department wise  Total vs Closed Projects',
-      },
+        text: 'Departments'
+      }
     },
-    responsive: true,
-    interaction: {
-      mode: 'index' as const,
-      intersect: false,
-    },
-    scales: {
-      x: {
-        stacked: true,
-        grid: {
-          display: false, // Remove background grid lines
-        },
-        ticks: {
-          // Customize x-axis ticks if needed
-          // min: 20,
-          // max: 100,
-          stepSize: 1,
-        },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Number of Projects'
       },
-      y: {
-        stacked: true,
-        grid: {
-          display: false, // Remove background grid lines
-        },
-        ticks: {
-          // Customize x-axis ticks if needed
-          // min: 20,
-          // max: 100,
-          stepSize: 1,
-        },
-      },
+      stackLabels: {
+        enabled: true,
+        style: {
+          fontWeight: 'bold',
+          color: (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
+        }
+      }
     },
-  };
-
-  const data = {
-    labels: chartData.map((data: any) => data.department),
-    datasets: [
+    legend: {
+      align: 'right',
+      x: -30,
+      verticalAlign: 'top',
+      y: 25,
+      floating: true,
+      backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
+      borderColor: '#CCC',
+      borderWidth: 1,
+      shadow: false
+    },
+    tooltip: {
+      headerFormat: '<b>{point.x}</b><br/>',
+      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+      bar: {
+        stacking: 'normal',
+        dataLabels: {
+          enabled: true
+        }
+      }
+    },
+    series: [
       {
-        label: 'Total projects',
+        name: 'Total projects',
         data: chartData.map((data: any) => data.totalProjects),
-        backgroundColor: 'rgb(53, 162, 235)',
-        stack: 'Stack 0',
+        color: 'rgb(53, 162, 235)',
       },
       {
-        label: 'Closed projects',
+        name: 'Closed projects',
         data: chartData.map((data: any) => data.closedProjects),
-        backgroundColor: 'rgb(255, 99, 132)',
-        stack: 'Stack 1',
-      },
-    ],
+        color: 'rgb(255, 99, 132)',
+      }
+    ]
   };
 
   // Fetch chart data
   const fetchData = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_CHART_URL,{
+      const response = await axios.get(ApiConfig.API_CHART_URL, {
         withCredentials: true, // Important for sending cookies
-      
       });
       const data = response.data;
       setChartData(data);
-      console.log('Chart data:', data);
+      // console.log('Chart data:', data);
     } catch (error) {
       console.error('Error fetching chart data:', error);
     }
@@ -103,9 +90,8 @@ function Dashboard() {
   // Fetch dashboard data
   const getDashboardData = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_DASHBOARD_URL,{
+      const response = await axios.get(ApiConfig.API_DASHBOARD_URL, {
         withCredentials: true,
-      
       });
       setDashboardData(Object.entries(response.data));
     } catch (error) {
@@ -121,16 +107,16 @@ function Dashboard() {
   return (
     <>
       <Navbar header={"Dashboard"} />
-      <div className="w-full md:w-[90%] h-screen mx-4 md:mx-8 px-0 md:px-6 rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
-        <div className="flex md:justify-between justify-center gap-x-2 md:gap-x-0">
+      <div className="w-full md:w-[90%] h-screen mx-2 md:mx-8 px-0 md:px-6 rounded-lg fixed top-32 scrollbar">
+        <div className="w-full flex md:justify-between gap-x-2 md:gap-x-0 overflow-scroll scrollbar px-4">
           {dashboardData.slice(0, 5).map((data: any, index: number) => (
-            <div key={index} className={`${index >= 3 ? 'hidden md:block' : ''}`}>
+            <div key={index} className={`${index >= 5 ? 'hidden md:block' : ''}`}>
               <DashboardCard data={data} />
             </div>
           ))}
         </div>
-        <div className="p-4 mt-8 mx-auto md:mx-0 w-4/5 h-80 md:h-80 md:w-1/2 bg-white">
-          <Bar data={data} options={options} />
+        <div className="w-full py-2 pr-4 mt-8 md:mx-0 h-auto md:h-80 md:w-1/2">
+          <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
       </div>
     </>

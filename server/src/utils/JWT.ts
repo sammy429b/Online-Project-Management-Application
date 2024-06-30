@@ -19,7 +19,7 @@ export function JWTsign(payload: number): string | null {
             algorithm: 'HS256',
             expiresIn: '1d',
         });
-        console.log(token)
+        // console.log(token)
         return token;
     } catch (error) {
         console.error('Error signing JWT:', error);
@@ -52,7 +52,7 @@ export function JWTverify(req: Request, res: Response, next: NextFunction): void
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET_KEY);
-        console.log(decoded);
+        // console.log(decoded);
         const id = (decoded as { id: number }).id;
         const user = User.findById(id);
         if (!user) {

@@ -109,7 +109,7 @@ function ProjectList() {
       const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status },{
         withCredentials: true,      
       });
-      console.log(response.data);
+      console.log("Status", response.data);
       setProjects((prevProjects) =>
         prevProjects.map((project) =>
           project._id === id ? { ...project, status } : project

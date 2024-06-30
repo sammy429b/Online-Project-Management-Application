@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 withCredentials:true
             })
 
-            console.log("response", response)
+            // console.log("response", response)
 
             if(response.status === 200){
                 handleLogoutAuth();

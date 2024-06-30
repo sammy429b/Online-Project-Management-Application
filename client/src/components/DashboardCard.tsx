@@ -5,8 +5,8 @@ function DashboardCard({ data }) {
             <div
                 className="bg-white w-40 md:w-60 h-24 flex items-start shadow-lg rounded-lg overflow-hidden"
             >
-                <div className="px-2 h-full bg-[#0CC9E8]"></div>
-                <div className="pl-4 pt-4">
+                <div className="px-1 h-full bg-[#0CC9E8]"></div>
+                <div className="pl-4 pt-2">
                     <h2 className="text-md font-medium text-gray-700">{data[0]}</h2>
                     <p className="text-4xl font-bold text-gray-500">{data[1]}</p>
                 </div>
