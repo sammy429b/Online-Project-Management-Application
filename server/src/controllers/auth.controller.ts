@@ -58,13 +58,13 @@ export const loginController = async (req: Request, res: Response) => {
         const existingUser = await User.findOne({ email });
 
         if (!existingUser) {
-            return res.status(401).json({ Success: false, Message: "Invalid User" });
+            return res.status(200).json({ Success: false, Message: "Invalid User" });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, existingUser.password);
 
         if (!isPasswordMatch) {
-            return res.status(401).json({ Success: false, Message: "Invalid User" });
+            return res.status(200).json({ Success: false, Message: "Invalid User" });
         }
 
 

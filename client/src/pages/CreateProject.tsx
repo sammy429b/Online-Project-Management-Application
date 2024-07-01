@@ -14,7 +14,10 @@ function CreateProject() {
         const endDate = new Date(data.endDate);
 
         if (endDate <= startDate) {
-            alert('End Date must be greater than Start Date')
+            errors.endDate = {
+                type: "manual",
+                message: "End Date should be greater than Start Date"
+            }
             return;
         }
         try {
@@ -24,10 +27,10 @@ function CreateProject() {
             });
             const responseData = await response.data;
             if (responseData.message === "Project created successfully.") {
-                alert('Project created successfully.')
+                // alert('Project created successfully.')
                 reset();
             } else {
-                alert('All fields are required')
+                // alert('All fields are required')
             }
 
         } catch (error) {

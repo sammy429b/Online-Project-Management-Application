@@ -109,7 +109,7 @@ function ProjectList() {
       const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status },{
         withCredentials: true,      
       });
-      console.log("Status", response.data);
+      // console.log("Status", response.data);
       setProjects((prevProjects) =>
         prevProjects.map((project) =>
           project._id === id ? { ...project, status } : project
@@ -135,7 +135,7 @@ function ProjectList() {
   return (
     <>
       <Navbar header={"Project Listing"} />
-      <div className="w-[90%] h-screen mx-8 px-6 md:bg-white rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
+      <div className="w-full md:w-[90%] h-screen mx-0 md:mx-8 px-6 md:bg-white rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
         <div className="flex justify-between items-center p-4">
           <div className="max-w-sm w-full">
             <label className=" flex items-center gap-2 border-b-2 border-gray-300 pb-2 w-full max-w-md">

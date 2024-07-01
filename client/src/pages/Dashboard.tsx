@@ -15,10 +15,11 @@ function Dashboard() {
       type: 'column'
     },
     title: {
-      text: 'Department wise Total vs Closed Projects'
+      text: ''
     },
     xAxis: {
       categories: chartData.map((data: any) => data.department),
+      
       title: {
         text: 'Departments'
       }
@@ -108,14 +109,15 @@ function Dashboard() {
     <>
       <Navbar header={"Dashboard"} />
       <div className="w-full md:w-[90%] h-screen mx-2 md:mx-8 px-0 md:px-6 rounded-lg fixed top-32 scrollbar">
-        <div className="w-full flex md:justify-between gap-x-2 md:gap-x-0 overflow-scroll scrollbar px-4">
+        <div className="w-full flex md:justify-between gap-x-2 overflow-scroll scrollbar px-4">
           {dashboardData.slice(0, 5).map((data: any, index: number) => (
             <div key={index} className={`${index >= 5 ? 'hidden md:block' : ''}`}>
               <DashboardCard data={data} />
             </div>
           ))}
         </div>
-        <div className="w-full py-2 pr-4 mt-8 md:mx-0 h-auto md:h-80 md:w-1/2">
+        <div className="w-full py-2 pr-4 mt-4 md:mx-0 h-auto md:h-80 md:w-1/2 rounded-md">
+          <h2 className="text-lg ml-2 mb-2 font-medium">Department wise Total vs Closed Projects</h2>
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
       </div>
