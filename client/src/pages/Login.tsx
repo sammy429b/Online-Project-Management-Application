@@ -28,20 +28,19 @@ function Login() {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log(response)
+            // console.log(response)
             const responseData = await response.data;
-            console.log(responseData.Message)
+            // console.log(responseData.Message)
             if (responseData.Success) {
                 setMessage(responseData.Message)
                 navigate('/');
                 handleLoginAuth();
             } else {
                 setMessage(responseData.Message)
-                console.log(responseData)
+                // console.log(responseData)
             }
 
         } catch (error) {
-            console.log()
             if (error.response) {
                 console.error('Error response:', error.response.data);
               } else if (error.request) {
@@ -68,8 +67,8 @@ function Login() {
                     <h2 className='text-white'>Online Project Management</h2>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className='bg-white w-[90%] md:w-[30%] py-10 px-12 shadow-none md:shadow-lg rounded-lg'>
-                    <h1 className="text-2xl font-bold mb-4">Login to get started</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className='bg-white w-full md:w-[30%] py-10 px-12 shadow-none md:shadow-lg rounded-lg'>
+                    <h1 className="text-2xl font-medium mb-4">Login to get started</h1>
                     <div className={`form-control w-full ${errors.email ? 'text-red-500' : ''}`}>
                         <label className="label">
                             <span className={`label-text ${errors.email ? 'text-red-500' : ''}`}>Email</span>
@@ -104,11 +103,15 @@ function Login() {
                     <div className='my-4 flex justify-end hover:cursor-pointer'>
                         <p className='text-sm text-blue-600 hover:text-700 transition-all'>Forgot Password?</p>
                     </div>
+
+                    <div className='my-4 flex justify-start hover:cursor-pointer md:hidden'>
+                <div className='text-red-500 my-2'>{message}</div>
+                    </div>
                     <div className='flex justify-center items-center '>
                         <button type="submit" className="btn bg-[#035FB2] hover:bg-[#045FB2] text-white btn-circle mt-6 w-full md:w-1/2 h-[0.5rem]">Login</button>
                     </div>
                 </form>
-                <div className='text-red-500 my-2'>{message}</div>
+                <div className='text-red-500 my-2 hidden md:block'>{message}</div>
             </div>
         </div>
     );

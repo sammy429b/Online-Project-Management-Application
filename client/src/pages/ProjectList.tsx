@@ -135,7 +135,7 @@ function ProjectList() {
   return (
     <>
       <Navbar header={"Project Listing"} />
-      <div className="w-full md:w-[90%] h-screen mx-0 md:mx-8 px-6 md:bg-white rounded-lg fixed top-32 overflow-scroll md:overflow-hidden scrollbar">
+      <div className="w-full md:w-[90%] h-screen mx-0 md:mx-8 px-6 md:bg-white rounded-lg fixed top-16 md:top-32 overflow-scroll md:overflow-hidden scrollbar">
         <div className="flex justify-between items-center p-4">
           <div className="max-w-sm w-full">
             <label className=" flex items-center gap-2 border-b-2 border-gray-300 pb-2 w-full max-w-md">
@@ -153,13 +153,26 @@ function ProjectList() {
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             <button className="text-gray-400" onClick={() => document.getElementById('my_modal_3').showModal()}><AlignLeft /></button>
             <dialog id="my_modal_3" className="modal">
-              <div className="modal-box">
+              <div className="modal-box w-full h-screen">
                 <form method="dialog">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                    ✕
+                  </button>
                 </form>
                 {FilterType.map((type) => (
-                  <p key={type}>{type}</p>
+                  <div className="form-control mt-2" key={type}>
+                    <label className="label cursor-pointer">
+                      <span className="label-text text-[16px]">{type}</span>
+                      <input
+                        type="checkbox"
+                        value={type}
+                        id={type}
+                        name="filter"
+                        className="checkbox text-[16px]"
+                        onChange={(e) => handleSortChange(e.target.value)}
+                      />
+                    </label>
+                  </div>
                 ))}
               </div>
             </dialog>
@@ -184,7 +197,7 @@ function ProjectList() {
         {/* Card for Mobile view */}
         <div className="mb-52 block md:hidden">
           {filteredProjects.map((project) => (
-            <div className="bg-white p-4 mb-4 rounded ">
+            <div className="bg-white p-4 mb-4 rounded" key={project._id}>
               <div className="flex justify-between mb-4">
                 <div >
                   <h2 className="font-semibold">{project.projectTheme}</h2>

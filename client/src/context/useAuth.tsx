@@ -7,7 +7,8 @@ interface AuthContextType {
     isAuthenticated: boolean;
     handleLoginAuth: () => void;
     handleLogoutAuth: () => void;
-    handleLogut: () => void;
+    handleLogout: () => void;
+    handleLogoutTokenExpire: () => void;
 }
 
 // Create the AuthContext with a default value
@@ -30,7 +31,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("isAuthenticated", JSON.stringify(true));
     };
     
-    const handleLogut = async() =>{
+    const handleLogout = async() =>{
         try {
             const response = await axios.get(ApiConfig.API_LOGOUT_URL,{
                 withCredentials:true
@@ -47,13 +48,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
 
+    const handleLogoutTokenExpire = () => {
+        setAuthenticated(false);
+        localStorage.removeItem("isAuthenticated");
+    }
+
     const handleLogoutAuth = () => {
         setAuthenticated(false);
         localStorage.removeItem("isAuthenticated");
     };
 
     return (
-        <AuthContext.Provider value={{isAuthenticated, handleLoginAuth, handleLogoutAuth,handleLogut }}>
+        <AuthContext.Provider value={{isAuthenticated, handleLoginAuth, handleLogoutAuth, handleLogout, handleLogoutTokenExpire }}>
             {children}
         </AuthContext.Provider>
     );

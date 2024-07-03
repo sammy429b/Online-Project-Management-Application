@@ -4,6 +4,7 @@ import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
 import { Project } from './ProjectList';
 import { FieldErrors } from 'react-hook-form';
+import { toast } from 'react-toastify';
 function CreateProject() {
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -42,8 +43,7 @@ function CreateProject() {
         <>
             <Navbar header={"Create Project"} />
             <div className='flex justify-center'>
-
-                <div className="w-[90%] mx-auto bg-white py-4 px-8 h-screen rounded-lg fixed overflow-scroll top-32 scrollbar pb-64 md:pb-0">
+                <div className="w-[90%] mx-auto bg-white py-4 px-8 h-screen rounded-lg fixed overflow-scroll top-16 md:top-32 scrollbar pb-64 md:pb-0">
                     <form onSubmit={handleSubmit(onSubmit)} className=''>
                         <div className="w-full flex  justify-between items-start">
                             <div className="w-full">
@@ -57,7 +57,7 @@ function CreateProject() {
                                         placeholder="Enter Project Theme"
                                         {...register('projectTheme', { required: 'Project Theme is required' })}
                                         id="projectTheme"
-                                        className="input pb-8 h-20 input-bordered w-full  max-w-3xl"
+                                        className="input pb-8 h-20 input-bordered w-full  max-w-3xl text-[16px]"
                                     />
                                     <div className="label">
                                         {errors.projectTheme && (
@@ -67,10 +67,10 @@ function CreateProject() {
                                     </div>
                                 </label>
                             </div>
-                            <div className='hidden md:block'>
+                            <div className='hidden md:block' onClick={ () =>( toast("hello") )}>
                                 <button
                                     type="submit"
-                                    className="w-40 bg-[#044E92] text-base py-2 px-4 rounded-3xl text-white m-4 border-none"
+                                    className="w-40 bg-[#025AAB] text-base py-2 px-4 rounded-3xl text-white m-4 border-none"
                                 >
                                     Save project
                                 </button>
@@ -139,7 +139,7 @@ const Input: React.FC<InputProps> = ({ label, register, name, errors }) => {
                 type="date"
                 {...register(name, { required: `${label} is required` })}
                 id={name}
-                className="input input-bordered w-full max-w-md"
+                className="input input-bordered w-full max-w-md text-[16px]"
             />
             <div className="label">
                 {errors[name] && (
@@ -163,15 +163,15 @@ const Select: React.FC<SelectProps> = ({ label, options, register, name, errors 
     return (
         <label className="form-control w-full max-w-md">
             <div className="label">
-                <span className="label-text">{label}</span>
+                <span className="label-text text-[16px] text-[#898989]">{label}</span>
                 <span className="label-text-alt"></span>
             </div>
             <select
                 {...register(name, { required: `${label} is required` })}
                 id={name}
-                className="select select-bordered "
+                className="select select-bordered text-[16px]"
             >
-                {options.map((option: string, index: number) => <option key={index} value={option}>{option}</option>)}
+                {options.map((option: string, index: number) => <option key={index} value={option} className=''>{option}</option>)}
             </select>
             <div className="label">
                 {errors[name] && (

@@ -46,7 +46,7 @@ export function JWTverify(req: Request, res: Response, next: NextFunction): void
     const token = cookie.token;
 
     if (!token) {
-        res.status(401).json({ message: "Unauthorized: token expired" });
+        res.status(200).json({ message: "Unauthorized: token expired", tokenExpired: true});
         return;
     }
 

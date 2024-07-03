@@ -10,9 +10,10 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+        
         <Routes>
-          <Route element={<PublicRoute/>}>
-          <Route path="/login" element={<Login />} />
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Main />}>

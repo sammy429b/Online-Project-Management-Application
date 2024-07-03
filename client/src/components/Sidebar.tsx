@@ -31,17 +31,18 @@ function Sidebar() {
     <div
       key={item}
       onClick={() => handleClick(item, path)}
-      className={`flex justify-center items-center cursor-pointer ${active === item ? 'relative' : ''}`}
+      className={`flex justify-center items-center cursor-pointer tooltip ${active === item ? 'relative' : ''}`}
+      data-tip={item}
     >
       {active === item && (
-        <div className="bg-[#044E92] w-12 md:w-1 rounded-t-xl md:rounded-r-xl h-2 md:h-8 fixed bottom-0 md:bottom-auto left-auto md:left-0"></div>
+        <div className="bg-[#025AAB] w-12 md:w-1 rounded-t-xl md:rounded-r-xl h-2 md:h-8 fixed bottom-0 md:bottom-auto left-auto md:left-0"></div>
       )}
       <img src={active === item ? activeImg : inactiveImg} alt={item} />
     </div>
   );
 
   return (
-    <div className="w-full h-full md:h-screen gap-y-16 flex flex-row md:flex-col justify-around md:justify-center items-center">
+    <div className="w-full h-full md:h-screen gap-y-16 flex flex-row md:flex-col justify-around md:justify-evenly items-center">
       <div className="w-full gap-y-8 flex flex-row md:flex-col justify-around md:justify-center items-center">
         {renderItem('Dashboard', 'Dashboard-active.svg', 'Dashboard.svg', '/')}
         {renderItem('Project-list', 'Project-list-active.svg', 'Project-list.svg', '/project-list')}
@@ -50,8 +51,8 @@ function Sidebar() {
         </div>
         {renderItem('Create-project', 'create-project-active.svg', 'create-project.svg', '/create-project')}
       </div>
-      <div className="hidden md:block" onClick={handleLogout}>
-        <LogOut className="text-gray-400 hover:text-[#044E92] transition-all" />
+      <div className="hidden md:block tooltip" data-tip="Logout" onClick={handleLogout}>
+        <LogOut className="text-gray-400 hover:text-[#025AAB] transition-all" />
       </div>
     </div>
   );
