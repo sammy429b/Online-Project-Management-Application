@@ -11,6 +11,7 @@ function Dashboard() {
   const [dashboardData, setDashboardData] = useState<any>([]);
   const [chartData, setChartData] = useState<any[]>([]);
   const { handleLogout } = useAuth();
+  
 
   const options = {
     chart: {
@@ -35,7 +36,7 @@ function Dashboard() {
         enabled: true,
         style: {
           fontWeight: 'bold',
-          color: (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
+          color: (Highcharts.defaultOptions?.title?.style && Highcharts.defaultOptions.title.style.color) || 'gray'
         }
       }
     },
@@ -45,7 +46,7 @@ function Dashboard() {
       verticalAlign: 'top',
       y: 25,
       floating: true,
-      backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
+      backgroundColor: Highcharts.defaultOptions?.legend?.backgroundColor || 'white',
       borderColor: '#CCC',
       borderWidth: 1,
       shadow: false

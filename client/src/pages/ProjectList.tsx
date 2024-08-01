@@ -27,27 +27,30 @@ function ProjectList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<string>("Priority");
   const [sortOrder, setSortOrder] = useState<string>("asc");
-  const[startIndex, setStartIndex] = useState(0);
-  const[endIndex, setEndIndex] = useState(5);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(5);
 
   const handleIncrement = () => {
-    if(endIndex >= filteredProjects.length) return;
+    if (endIndex >= filteredProjects.length) return;
+    const newEndIndex = Math.min(endIndex + 5, filteredProjects.length);
     setStartIndex(startIndex + 5);
-    setEndIndex(endIndex + 5);
+    setEndIndex(newEndIndex);
   }
 
   const handleDecrement = () => {
-    if(startIndex <= 0) return;
-    setStartIndex(startIndex - 5);
-    setEndIndex(endIndex - 5);
+    if (startIndex <= 0) return;
+    const newStartIndex = Math.max(startIndex - 5, 0);
+    setStartIndex(newStartIndex);
+    setEndIndex(startIndex);
   }
+
 
   // Fetch project list
   const getProject = async () => {
     try {
-      const response = await axios.get(ApiConfig.API_PROJECT_LIST_URL,{
+      const response = await axios.get(ApiConfig.API_PROJECT_LIST_URL, {
         withCredentials: true,
-      
+
       });
       setProjects([...response.data.projects]);
     } catch (error) {
@@ -70,10 +73,10 @@ function ProjectList() {
   };
 
   // fucntion to sort the projects based on the selected field
-  
+
   const sortedProjects = [...projects].sort((a, b) => {
-    let valueA: any = a[sortField.toLowerCase()];
-    let valueB: any = b[sortField.toLowerCase()];
+    let valueA = a[sortField.toLowerCase() as keyof Project];
+    let valueB = b[sortField.toLowerCase() as keyof Project];
 
     const sortMaps: { [key: string]: { [key: string]: number } } = {
       priority: { low: 1, medium: 2, high: 3 },
@@ -86,8 +89,9 @@ function ProjectList() {
     };
 
     if (sortMaps[sortField.toLowerCase()]) {
-      valueA = sortMaps[sortField.toLowerCase()][valueA.toLowerCase()] ?? 0;
-      valueB = sortMaps[sortField.toLowerCase()][valueB.toLowerCase()] ?? 0;
+      valueA = (sortMaps[sortField.toLowerCase()][valueA.toLowerCase()] ?? 0).toString();
+      valueB = (sortMaps[sortField.toLowerCase()][valueB.toLowerCase()] ?? 0).toString();
+
     } else {
       valueA = valueA?.toString().toLowerCase() ?? "";
       valueB = valueB?.toString().toLowerCase() ?? "";
@@ -106,15 +110,18 @@ function ProjectList() {
   // Update project status
   const handleStatusChange = async (id: string, status: string) => {
     try {
-      const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status },{
-        withCredentials: true,      
+      const response = await axios.put(ApiConfig.API_UPDATE_PROJECT_STATUS_URL, { id, status }, {
+        withCredentials: true,
       });
-      // console.log("Status", response.data);
-      setProjects((prevProjects) =>
-        prevProjects.map((project) =>
-          project._id === id ? { ...project, status } : project
-        )
-      );
+      if (response.data.success) {
+        alert("Project status updated successfully.");
+
+        setProjects((prevProjects) =>
+          prevProjects.map((project) =>
+            project._id === id ? { ...project, status } : project
+          )
+        );
+      }
     } catch (error) {
       console.log(error);
     }
@@ -151,7 +158,12 @@ function ProjectList() {
           </div>
           <div className="block md:hidden">
             {/* Open the modal using document.getElementById('ID').showModal() method */}
-            <button className="text-gray-400" onClick={() => document.getElementById('my_modal_3').showModal()}><AlignLeft /></button>
+            <button className="text-gray-400" onClick={() => {
+              const modal = document.getElementById('my_modal_3') as HTMLDialogElement;
+              if (modal) {
+                modal.showModal();
+              }
+            }}><AlignLeft /></button>
             <dialog id="my_modal_3" className="modal">
               <div className="modal-box w-full h-screen">
                 <form method="dialog">
@@ -227,7 +239,7 @@ function ProjectList() {
           ))}
         </div>
 
-         {/* Table for desktop view */}
+        {/* Table for desktop view */}
         <div className="w-full py-8">
           <table className="w-full bg-white border-gray-200 rounded-md hidden md:block">
             <thead className="w-full">
@@ -247,7 +259,7 @@ function ProjectList() {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {filteredProjects.slice(startIndex,endIndex).map((project) => (
+              {filteredProjects.slice(startIndex, endIndex).map((project) => (
                 <tr key={project._id}>
                   <td className="w-80 px-0 py-4 border-b border-gray-200">{project.projectTheme}
                     <p className="text-sm  text-gray-400 font-normal">{dateTransform(project.startDate)} to {dateTransform(project.endDate)}</p>

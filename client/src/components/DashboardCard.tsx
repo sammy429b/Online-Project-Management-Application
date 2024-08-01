@@ -1,5 +1,9 @@
 
-function DashboardCard({ data }) {
+interface DashboardCardProps {
+    data: string[];
+}
+
+function DashboardCard({ data }: DashboardCardProps) {
     return (
         <>
             <div

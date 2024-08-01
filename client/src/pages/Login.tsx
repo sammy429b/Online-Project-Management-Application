@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../App.css';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,10 +8,17 @@ import { useAuth } from '../context/useAuth';
 import { Project } from '../pages/ProjectList';
 import { Eye, EyeOff } from 'lucide-react';
 
+
+interface LoginProps extends Project {
+    
+    email: string;
+    password: string;
+}
+
 function Login() {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [message, setMessage] = useState('');
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginProps>();
     const { handleLoginAuth } = useAuth();
     const navigate = useNavigate();
 
@@ -19,7 +26,7 @@ function Login() {
         setIsPasswordVisible(!isPasswordVisible);
     }
 
-    const onSubmit = async (data: Project) => {
+    const onSubmit: SubmitHandler<Project> = async (data: Project) => {
         // console.log(data)
         try {
             const response = await axios.post(ApiConfig.API_LOGIN_URL, data, {
@@ -40,7 +47,7 @@ function Login() {
                 // console.log(responseData)
             }
 
-        } catch (error) {
+        } catch (error:any) {
             if (error.response) {
                 console.error('Error response:', error.response.data);
               } else if (error.request) {

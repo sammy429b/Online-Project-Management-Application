@@ -38,8 +38,7 @@ export const createProjectController = async (req: Request, res: Response) => {
 
         await newProject.save();
 
-        res.status(201).json({ message: "Project created successfully.", project: newProject });
-    } catch (error) {
+        res.status(201).json({ message: "Project created successfully.", project: newProject, success: true });    } catch (error) {
         console.log("error in createProject", error)
         res.status(500).json({ message: "Internal server error" });
     }
@@ -79,7 +78,7 @@ export const updateProjectStatusController = async (req: Request, res: Response)
 
         await project.save();
 
-        res.status(200).json({ message: "Project status updated successfully", project });
+        res.status(200).json({ message: "Project status updated successfully", project, success: true });
 
     } catch (error) {
         console.log("error in createProject", error)
@@ -115,7 +114,7 @@ export const projectCountController = async (req: Request, res: Response) => {
 
 // Chart Data Controller
 export const chartDataController = async (req: Request, res: Response) => {
-    
+
     try {
         const departmentSuccess = await Project.aggregate([
             {

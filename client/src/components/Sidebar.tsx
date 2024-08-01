@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 
+
+
 function Sidebar() {
   const { handleLogout } = useAuth();
   const [active, setActive] = useState(() => {
@@ -21,13 +23,13 @@ function Sidebar() {
     }
   }, [active, navigate]);
 
-  const handleClick = (item, path) => {
+  const handleClick = (item:string, path:string) => {
     setActive(item);
     navigate(path);
     localStorage.setItem('active', item);
   };
 
-  const renderItem = (item, activeImg, inactiveImg, path) => (
+  const renderItem = (item:string, activeImg:string, inactiveImg:string, path:string) => (
     <div
       key={item}
       onClick={() => handleClick(item, path)}
