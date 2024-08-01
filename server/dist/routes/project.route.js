@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const project_controller_1 = require("../controllers/project.controller");
+const JWT_1 = require("../utils/JWT");
+const router = (0, express_1.Router)();
+router.use(JWT_1.JWTverify);
+router.get("/project-list", project_controller_1.getProjectController);
+router.get("/dashboard", project_controller_1.projectCountController);
+router.get("/chart", project_controller_1.chartDataController);
+router.post("/create-project", project_controller_1.createProjectController);
+router.put("/update-status", project_controller_1.updateProjectStatusController);
+exports.default = router;
