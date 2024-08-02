@@ -4,29 +4,28 @@ import Main from "./pages/Main";
 import Dashboard from "./pages/Dashboard";
 import ProjectList from "./pages/ProjectList";
 import CreateProject from "./pages/CreateProject";
-import PrivateRoute, { PublicRoute } from "./utils/ProtectesRoutes";
+import { PrivateRoute, PublicRoute } from "./utils/ProtectesRoutes";
 import Register from "./pages/Register";
 
 export default function App() {
   return (
-    <>
-      <BrowserRouter>
-        
-        <Routes>
-          <Route element={<PublicRoute />}>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Main />}>
-              <Route index element={<Dashboard />} />
-              <Route path="/project-list" element={<ProjectList />} />
-              <Route path="/create-project" element={<CreateProject />} />
-            </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        {/* Public Routes */}
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
-  )
+        {/* Private Routes */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/main" element={<Main />}>
+            <Route index element={<Dashboard />} />
+            <Route path="project-list" element={<ProjectList />} />
+            <Route path="create-project" element={<CreateProject />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }

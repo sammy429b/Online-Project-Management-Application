@@ -15,11 +15,11 @@ function Sidebar() {
   useEffect(() => {
     // Handle initial navigation based on active state
     if (active === 'Dashboard') {
-      navigate('/');
+      navigate('/main');
     } else if (active === 'Project-list') {
-      navigate('/project-list');
+      navigate('/main/project-list');
     } else if (active === 'Create-project') {
-      navigate('/create-project');
+      navigate('/main/create-project');
     }
   }, [active, navigate]);
 
@@ -46,12 +46,12 @@ function Sidebar() {
   return (
     <div className="w-full h-full md:h-screen gap-y-16 flex flex-row md:flex-col justify-around md:justify-evenly items-center">
       <div className="w-full gap-y-8 flex flex-row md:flex-col justify-around md:justify-center items-center">
-        {renderItem('Dashboard', 'Dashboard-active.svg', 'Dashboard.svg', '/')}
-        {renderItem('Project-list', 'Project-list-active.svg', 'Project-list.svg', '/project-list')}
+        {renderItem('Dashboard', '/Dashboard-active.svg', '/Dashboard.svg', '/main')}
+        {renderItem('Project-list', '/Project-list-active.svg', '/Project-list.svg', '/main/project-list')}
         <div className="hidden md:block">
           <hr className="w-6 h-1 mx-auto bg-gray-300 border-0 rounded my-4 dark:bg-gray-700" />
         </div>
-        {renderItem('Create-project', 'create-project-active.svg', 'create-project.svg', '/create-project')}
+        {renderItem('Create-project', '/create-project-active.svg', '/create-project.svg', '/main/create-project')}
       </div>
       <div className="hidden md:block tooltip" data-tip="Logout" onClick={handleLogout}>
         <LogOut className="text-gray-400 hover:text-[#025AAB] transition-all" />

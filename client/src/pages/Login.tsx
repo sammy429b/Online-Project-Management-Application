@@ -3,7 +3,7 @@ import '../App.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ApiConfig from '../utils/ApiConfig';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { Project } from '../pages/ProjectList';
 import { Eye, EyeOff } from 'lucide-react';
@@ -40,7 +40,7 @@ function Login() {
             // console.log(responseData.Message)
             if (responseData.Success) {
                 setMessage(responseData.Message)
-                navigate('/');
+                navigate('/main');
                 handleLoginAuth();
             } else {
                 setMessage(responseData.Message)
@@ -117,6 +117,10 @@ function Login() {
                     <div className='flex justify-center items-center '>
                         <button type="submit" className="btn bg-[#035FB2] hover:bg-[#045FB2] text-white btn-circle mt-6 w-full md:w-1/2 h-[0.5rem]">Login</button>
                     </div>
+
+                <div className='text-center mt-2'>
+                    <Link to={"/register"} className='text-center text-sm mt-4'>Don't have an account? <span className='text-blue-600 hover:text-700 transition-all'>Register</span></Link>
+                </div>
                 </form>
                 <div className='text-red-500 my-2 hidden md:block'>{message}</div>
             </div>
