@@ -6,7 +6,7 @@ dotenv.config();
 
 
 // JWT Token generation
-export function JWTsign(payload: number): string | null {
+export  function JWTsign(payload: number): string | null {
     const JWT_SECRET_KEY = process.env.SECRET_KEY;
 
     if (!JWT_SECRET_KEY) {
@@ -15,11 +15,11 @@ export function JWTsign(payload: number): string | null {
     }
 
     try {
-        const token = jwt.sign({ id: payload }, JWT_SECRET_KEY, {
+        const token =  jwt.sign({ id: payload }, JWT_SECRET_KEY, {
             algorithm: 'HS256',
             expiresIn: '1d',
         });
-        // console.log(token)
+        console.log("token", token)
         return token;
     } catch (error) {
         console.error('Error signing JWT:', error);
@@ -28,8 +28,10 @@ export function JWTsign(payload: number): string | null {
 }
 
 // JWT Token verification
-export function JWTverify(req: Request, res: Response, next: NextFunction): void {
-    const cookie = req.cookies;
+export async function JWTverify(req: Request, res: Response, next: NextFunction) {
+    const token = req.cookies.token;
+    console.log(req.cookies);
+    
     const JWT_SECRET_KEY = process.env.SECRET_KEY;
 
     if (!JWT_SECRET_KEY) {
@@ -38,23 +40,18 @@ export function JWTverify(req: Request, res: Response, next: NextFunction): void
         return;
     }
 
-    if (!cookie) {
+    if (!token) {
         res.status(401).json({ message: "Unauthorized" });
         return;
     }
 
-    const token = cookie.token;
-
-    if (!token) {
-        res.status(200).json({ message: "Unauthorized: token expired", tokenExpired: true});
-        return;
-    }
+    console.log(token);
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET_KEY);
         // console.log(decoded);
         const id = (decoded as { id: number }).id;
-        const user = User.findById(id);
+        const user = await User.findById(id);
         if (!user) {
             res.status(404).json({ message: "User not found" });
             return;

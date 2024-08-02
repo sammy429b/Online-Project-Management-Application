@@ -77,7 +77,10 @@ export const loginController = async (req: Request, res: Response) => {
         res.cookie('token', token, {
             sameSite: 'lax',
             httpOnly: true,
+            secure:false
         });
+
+        // console.log("User logged in successfully")
 
         res.status(200).json({ Success: true, Message: "Valid User", token });
 

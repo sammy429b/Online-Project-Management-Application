@@ -4,7 +4,7 @@ import { JWTverify } from '../utils/JWT';
 
 const router = Router();
 
-router.use(JWTverify)
+// router.use(JWTverify)
 
 router.get("/project-list", getProjectController)
 router.get("/dashboard", projectCountController)
