@@ -13,7 +13,8 @@ export default function App() {
         
         <Routes>
           <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Register />} />
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Main />}>
