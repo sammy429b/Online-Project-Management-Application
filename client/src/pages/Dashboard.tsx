@@ -21,7 +21,7 @@ function Dashboard() {
       text: ''
     },
     xAxis: {
-      categories: chartData.map((data: any) => data.department),
+      categories: Array.isArray(chartData) ? chartData.map((data: any) => data.department) : [],
       
       title: {
         // text: 'Departments'
@@ -66,12 +66,12 @@ function Dashboard() {
     series: [
       {
         name: 'Total projects',
-        data: chartData.map((data: any) => data.totalProjects) || [],
+        data:Array.isArray(chartData) ? chartData.map((data: any) => data.totalProjects) : [],
         color: 'rgb(53, 162, 235)',
       },
       {
         name: 'Closed projects',
-        data: chartData.map((data: any) => data.closedProjects) || [],
+        data: Array.isArray(chartData) ? chartData.map((data: any) => data.closedProjects) : [],
         color: 'rgb(255, 99, 132)',
       }
     ]

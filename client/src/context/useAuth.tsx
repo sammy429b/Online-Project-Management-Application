@@ -21,7 +21,7 @@ interface AuthProviderProps {
 
 // Define the AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [isAuthenticated, setAuthenticated] = useState<boolean>(() => JSON.parse(localStorage.getItem("isAuthenticated") || 'true'));
+    const [isAuthenticated, setAuthenticated] = useState<boolean>(() => JSON.parse(localStorage.getItem("isAuthenticated") || 'false'));
     useEffect(() => {
         localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
     }, [isAuthenticated]);
@@ -36,8 +36,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             const response = await axios.get(ApiConfig.API_LOGOUT_URL,{
                 withCredentials:true
             })
-
-            // console.log("response", response)
 
             if(response.status === 200){
                 handleLogoutAuth();
