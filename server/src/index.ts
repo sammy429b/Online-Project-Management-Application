@@ -34,7 +34,7 @@ app.use(
 );
 
 // Routes
-app.use("/", authRoute);
+app.use("/auth", authRoute);
 app.use("/", projectRoute);
 
 app.get("/", (req: Request, res: Response) => {
