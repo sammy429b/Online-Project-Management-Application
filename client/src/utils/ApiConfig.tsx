@@ -1,7 +1,8 @@
 const port = 3030
 
 export default class ApiConfig {
-    static API_BASE_URL = 'http://localhost:' + port;
+   // static API_BASE_URL = 'http://localhost:' + port;
+    static API_BASE_URL = "https://teachprimelab.onrender.com/"
     static API_REGISTER_URL = this.API_BASE_URL + '/register';
     static API_LOGIN_URL = this.API_BASE_URL + '/login';
     static API_LOGOUT_URL = this.API_BASE_URL + '/logout';
