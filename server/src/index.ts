@@ -17,21 +17,12 @@ const accessOrigin = process.env.ORIGIN || 'http://localhost:5173';
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
+const corsOptions = {
     origin: accessOrigin,
-    credentials: true
-}));
-
-app.use(
-    '/weather',
-    createProxyMiddleware({
-        target: accessOrigin,
-        changeOrigin: true,
-        pathRewrite: {
-            '^/weather': '', // This rewrites /weather to /
-        },
-    })
-);
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
 
 // Routes
 app.use("/auth", authRoute);
