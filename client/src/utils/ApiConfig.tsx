@@ -2,7 +2,7 @@
 
 export default class ApiConfig {
    // static API_BASE_URL = 'http://localhost:' + port;
-    static API_BASE_URL = "https://teachprimelab.onrender.com"
+    static API_BASE_URL =  import.meta.env.VITE_SERVER_ORIGIN;
     static API_REGISTER_URL = this.API_BASE_URL + '/auth/register';
     static API_LOGIN_URL = this.API_BASE_URL + '/auth/login';
     static API_LOGOUT_URL = this.API_BASE_URL + '/auth/logout';
