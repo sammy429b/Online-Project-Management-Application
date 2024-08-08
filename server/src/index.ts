@@ -1,12 +1,10 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import DBconnection from './utils/DBconnect';
 import authRoute from './routes/auth.route';
 import projectRoute from './routes/project.route';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import { NextFunction } from 'http-proxy-middleware/dist/types';
 
 const app: Express = express();
 dotenv.config();
@@ -25,8 +23,8 @@ const corsOptions = {
 };
 
 // Routes
-app.use("/auth", authRoute);
 app.use("/", projectRoute);
+app.use("/", authRoute);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("TypeScript with Express");
