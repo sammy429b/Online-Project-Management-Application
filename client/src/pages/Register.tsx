@@ -43,6 +43,7 @@ function Register() {
       // console.log(responseData.Message)
       if (responseData.Success) {
         setMessage(responseData.Message);
+        alert("Registered successfully");
         navigate("/");
         handleLoginAuth();
       } else {
