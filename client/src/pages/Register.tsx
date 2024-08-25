@@ -96,7 +96,7 @@ function Register() {
                   errors.username ? "text-red-500" : ""
                 }`}
               >
-                Email
+                Username
               </span>
             </label>
             <input
@@ -105,7 +105,7 @@ function Register() {
               className={`input input-bordered w-full bg-white  ${
                 errors.username ? "border-red-500" : ""
               }`}
-              {...register("username", { required: "Email is required" })}
+              {...register("username", { required: "Username is required" })}
             />
             {errors.username && (
               <span className="label-text-alt text-red-500">
